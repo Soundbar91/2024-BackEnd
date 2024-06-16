@@ -3,6 +3,9 @@ package com.example.demo.repository;
 import java.sql.PreparedStatement;
 import java.util.List;
 
+import com.example.demo.exception.ApplicationException;
+import com.example.demo.exception.ErrorCode;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -62,9 +65,13 @@ public class BoardRepositoryJdbc implements BoardRepository {
 
     @Override
     public void deleteById(Long id) {
-        jdbcTemplate.update("""
+        try {
+            jdbcTemplate.update("""
             DELETE FROM board WHERE id = ?
             """, id);
+        } catch (DataIntegrityViolationException e) {
+            throw new ApplicationException(ErrorCode.BOARD_REFERENCE);
+        }
     }
 
     @Override

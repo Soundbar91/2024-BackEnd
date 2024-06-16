@@ -13,7 +13,8 @@ public enum ErrorCode {
 
     FIELD_NULL(400, HttpStatus.BAD_REQUEST, "Field is null or blank"),
 
-    MEMBER_REFERENCE(409, HttpStatus.CONFLICT, "Member reference already exists");
+    MEMBER_REFERENCE(409, HttpStatus.CONFLICT, "Member reference already exists"),
+    BOARD_REFERENCE(409, HttpStatus.CONFLICT, "Board reference already exists");
 
     private final int code;
     private final HttpStatus status;
