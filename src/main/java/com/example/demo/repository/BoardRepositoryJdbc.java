@@ -46,7 +46,7 @@ public class BoardRepositoryJdbc implements BoardRepository {
                     WHERE id = ?
                     """, boardRowMapper, id);
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            throw new ApplicationException(ErrorCode.BOARD_NOT_FOUND);
         }
     }
 

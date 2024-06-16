@@ -31,7 +31,6 @@ public class BoardService {
 
     public BoardResponse getBoardById(Long id) {
         Board board = boardRepository.findById(id);
-        if (board == null) throw new ApplicationException(ErrorCode.BOARD_NOT_FOUND);
         return BoardResponse.from(board);
     }
 
