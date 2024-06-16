@@ -4,7 +4,8 @@ import org.springframework.http.HttpStatus;
 
 public enum ErrorCode {
     ARTICLE_NOT_FOUND(404, HttpStatus.NOT_FOUND, "Article not found"),
-    BOARD_NOT_FOUND(404, HttpStatus.NOT_FOUND, "Board not found");
+    BOARD_NOT_FOUND(404, HttpStatus.NOT_FOUND, "Board not found"),
+    MEMBER_NOT_FOUND(404, HttpStatus.NOT_FOUND, "Member not found");
 
     private final int code;
     private final HttpStatus status;

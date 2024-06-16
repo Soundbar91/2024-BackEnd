@@ -3,6 +3,7 @@ package com.example.demo.repository;
 import java.sql.PreparedStatement;
 import java.util.List;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -37,11 +38,15 @@ public class MemberRepositoryJdbc implements MemberRepository {
 
     @Override
     public Member findById(Long id) {
-        return jdbcTemplate.queryForObject("""
-            SELECT id, name, email, password
-            FROM member
-            WHERE id = ?
-            """, memberRowMapper, id);
+        try {
+            return jdbcTemplate.queryForObject("""
+                    SELECT id, name, email, password
+                    FROM member
+                    WHERE id = ?
+                    """, memberRowMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
