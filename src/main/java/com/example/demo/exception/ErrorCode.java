@@ -9,7 +9,7 @@ public enum ErrorCode {
 
     EMAIL_EXISTS(409, HttpStatus.CONFLICT, "Email already exists"),
 
-    FK_BOARD_NOT_EXISTS(400, HttpStatus.BAD_REQUEST, "Board FK is not exists"),
+    FK_NOT_EXISTS(400, HttpStatus.BAD_REQUEST, "FK is not exists"),
 
     FIELD_NULL(400, HttpStatus.BAD_REQUEST, "Field is null or blank");
 

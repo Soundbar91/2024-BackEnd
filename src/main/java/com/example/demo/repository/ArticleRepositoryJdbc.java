@@ -76,20 +76,24 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
 
     @Override
     public Article insert(Article article) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement("""
-                    INSERT INTO article (board_id, author_id, title, content)
-                    VALUES (?, ?, ?, ?)
-                    """,
-                new String[]{"id"});
-            ps.setLong(1, article.getBoardId());
-            ps.setLong(2, article.getAuthorId());
-            ps.setString(3, article.getTitle());
-            ps.setString(4, article.getContent());
-            return ps;
-        }, keyHolder);
-        return findById(keyHolder.getKey().longValue());
+        try {
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(con -> {
+                PreparedStatement ps = con.prepareStatement("""
+                                INSERT INTO article (board_id, author_id, title, content)
+                                VALUES (?, ?, ?, ?)
+                                """,
+                        new String[]{"id"});
+                ps.setLong(1, article.getBoardId());
+                ps.setLong(2, article.getAuthorId());
+                ps.setString(3, article.getTitle());
+                ps.setString(4, article.getContent());
+                return ps;
+            }, keyHolder);
+            return findById(keyHolder.getKey().longValue());
+        } catch (DataIntegrityViolationException e) {
+            throw new ApplicationException(ErrorCode.FK_NOT_EXISTS);
+        }
     }
 
     @Override
@@ -107,7 +111,7 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
             );
             return findById(article.getId());
         } catch (DataIntegrityViolationException e) {
-            throw new ApplicationException(ErrorCode.FK_BOARD_NOT_EXISTS);
+            throw new ApplicationException(ErrorCode.FK_NOT_EXISTS);
         }
     }
 
