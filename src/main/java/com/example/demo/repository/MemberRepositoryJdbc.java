@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.util.List;
 
 import com.example.demo.exception.ApplicationException;
-import com.example.demo.exception.ErrorCode;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,6 +14,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.Member;
+
+import static com.example.demo.exception.ErrorCode.*;
 
 @Repository
 public class MemberRepositoryJdbc implements MemberRepository {
@@ -35,9 +36,9 @@ public class MemberRepositoryJdbc implements MemberRepository {
     @Override
     public List<Member> findAll() {
         return jdbcTemplate.query("""
-            SELECT id, name, email, password
-            FROM member
-            """, memberRowMapper);
+                SELECT id, name, email, password
+                FROM member
+                """, memberRowMapper);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class MemberRepositoryJdbc implements MemberRepository {
                     WHERE id = ?
                     """, memberRowMapper, id);
         } catch (EmptyResultDataAccessException e) {
-            throw new ApplicationException(ErrorCode.MEMBER_NOT_FOUND);
+            throw new ApplicationException(MEMBER_NOT_FOUND);
         }
     }
 
@@ -58,8 +59,8 @@ public class MemberRepositoryJdbc implements MemberRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement("""
-                INSERT INTO member (name, email, password) VALUES (?, ?, ?)
-                """, new String[]{"id"});
+                    INSERT INTO member (name, email, password) VALUES (?, ?, ?)
+                    """, new String[]{"id"});
             ps.setString(1, member.getName());
             ps.setString(2, member.getEmail());
             ps.setString(3, member.getPassword());
@@ -78,7 +79,7 @@ public class MemberRepositoryJdbc implements MemberRepository {
                     """, member.getName(), member.getEmail(), member.getId());
             return findById(member.getId());
         } catch (DuplicateKeyException e) {
-            throw new ApplicationException(ErrorCode.EMAIL_EXISTS);
+            throw new ApplicationException(EMAIL_EXISTS);
         }
     }
 
@@ -90,7 +91,7 @@ public class MemberRepositoryJdbc implements MemberRepository {
                     WHERE id = ?
                     """, id);
         } catch (DataIntegrityViolationException e) {
-            throw new ApplicationException(ErrorCode.MEMBER_REFERENCE);
+            throw new ApplicationException(MEMBER_REFERENCE);
         }
     }
 }

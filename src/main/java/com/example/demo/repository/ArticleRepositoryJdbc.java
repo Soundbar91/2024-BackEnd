@@ -4,8 +4,6 @@ import java.sql.PreparedStatement;
 import java.util.List;
 
 import com.example.demo.exception.ApplicationException;
-import com.example.demo.exception.ErrorCode;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,6 +13,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.Article;
+
+import static com.example.demo.exception.ErrorCode.*;
 
 @Repository
 public class ArticleRepositoryJdbc implements ArticleRepository {
@@ -38,27 +38,27 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return jdbcTemplate.query("""
-            SELECT id,  board_id,  author_id,  title,  content,  created_date,  modified_date
-            FROM article
-            """, articleRowMapper);
+                SELECT id,  board_id,  author_id,  title,  content,  created_date,  modified_date
+                FROM article
+                """, articleRowMapper);
     }
 
     @Override
     public List<Article> findAllByBoardId(Long boardId) {
         return jdbcTemplate.query("""
-            SELECT id,  board_id,  author_id,  title,  content,  created_date,  modified_date
-            FROM article
-            WHERE board_id = ?
-            """, articleRowMapper, boardId);
+                SELECT id,  board_id,  author_id,  title,  content,  created_date,  modified_date
+                FROM article
+                WHERE board_id = ?
+                """, articleRowMapper, boardId);
     }
 
     @Override
     public List<Article> findAllByMemberId(Long memberId) {
         return jdbcTemplate.query("""
-            SELECT id,  board_id,  author_id,  title,  content,  created_date,  modified_date
-            FROM article
-            WHERE author_id = ?
-            """, articleRowMapper, memberId);
+                SELECT id,  board_id,  author_id,  title,  content,  created_date,  modified_date
+                FROM article
+                WHERE author_id = ?
+                """, articleRowMapper, memberId);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
                     WHERE id = ?
                     """, articleRowMapper, id);
         } catch (EmptyResultDataAccessException e) {
-            throw new ApplicationException(ErrorCode.ARTICLE_NOT_FOUND);
+            throw new ApplicationException(ARTICLE_NOT_FOUND);
         }
     }
 
@@ -92,7 +92,7 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
             }, keyHolder);
             return findById(keyHolder.getKey().longValue());
         } catch (DataIntegrityViolationException e) {
-            throw new ApplicationException(ErrorCode.FK_NOT_EXISTS);
+            throw new ApplicationException(FK_NOT_EXISTS);
         }
     }
 
@@ -111,15 +111,15 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
             );
             return findById(article.getId());
         } catch (DataIntegrityViolationException e) {
-            throw new ApplicationException(ErrorCode.FK_NOT_EXISTS);
+            throw new ApplicationException(FK_NOT_EXISTS);
         }
     }
 
     @Override
     public void deleteById(Long id) {
         jdbcTemplate.update("""
-            DELETE FROM article
-            WHERE id = ?
-            """, id);
+                DELETE FROM article
+                WHERE id = ?
+                """, id);
     }
 }

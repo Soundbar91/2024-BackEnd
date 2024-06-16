@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.util.List;
 
 import com.example.demo.exception.ApplicationException;
-import com.example.demo.exception.ErrorCode;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,6 +13,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.Board;
+
+import static com.example.demo.exception.ErrorCode.*;
 
 @Repository
 public class BoardRepositoryJdbc implements BoardRepository {
@@ -32,9 +33,9 @@ public class BoardRepositoryJdbc implements BoardRepository {
     @Override
     public List<Board> findAll() {
         return jdbcTemplate.query("""
-            SELECT id, name
-            FROM board
-            """, boardRowMapper);
+                SELECT id, name
+                FROM board
+                """, boardRowMapper);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class BoardRepositoryJdbc implements BoardRepository {
                     WHERE id = ?
                     """, boardRowMapper, id);
         } catch (EmptyResultDataAccessException e) {
-            throw new ApplicationException(ErrorCode.BOARD_NOT_FOUND);
+            throw new ApplicationException(BOARD_NOT_FOUND);
         }
     }
 
@@ -55,8 +56,8 @@ public class BoardRepositoryJdbc implements BoardRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement("""
-                INSERT INTO board (name) VALUES (?)
-                """, new String[]{"id"});
+                    INSERT INTO board (name) VALUES (?)
+                    """, new String[]{"id"});
             ps.setString(1, board.getName());
             return ps;
         }, keyHolder);
@@ -67,18 +68,18 @@ public class BoardRepositoryJdbc implements BoardRepository {
     public void deleteById(Long id) {
         try {
             jdbcTemplate.update("""
-            DELETE FROM board WHERE id = ?
-            """, id);
+                    DELETE FROM board WHERE id = ?
+                    """, id);
         } catch (DataIntegrityViolationException e) {
-            throw new ApplicationException(ErrorCode.BOARD_REFERENCE);
+            throw new ApplicationException(BOARD_REFERENCE);
         }
     }
 
     @Override
     public Board update(Board board) {
         return jdbcTemplate.queryForObject("""
-            UPDATE board SET name = ? WHERE id = ?
-            """, boardRowMapper, board.getName(), board.getId()
+                UPDATE board SET name = ? WHERE id = ?
+                """, boardRowMapper, board.getName(), board.getId()
         );
     }
 }
