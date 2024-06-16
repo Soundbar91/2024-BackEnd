@@ -3,6 +3,7 @@ package com.example.demo.repository;
 import java.sql.PreparedStatement;
 import java.util.List;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -58,11 +59,15 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
 
     @Override
     public Article findById(Long id) {
-        return jdbcTemplate.queryForObject("""
-            SELECT id,  board_id,  author_id,  title,  content,  created_date,  modified_date
-            FROM article
-            WHERE id = ?
-            """, articleRowMapper, id);
+        try {
+            return jdbcTemplate.queryForObject("""
+                    SELECT id,  board_id,  author_id,  title,  content,  created_date,  modified_date
+                    FROM article
+                    WHERE id = ?
+                    """, articleRowMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
