@@ -3,6 +3,9 @@ package com.example.demo.repository;
 import java.sql.PreparedStatement;
 import java.util.List;
 
+import com.example.demo.exception.ApplicationException;
+import com.example.demo.exception.ErrorCode;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -66,12 +69,16 @@ public class MemberRepositoryJdbc implements MemberRepository {
 
     @Override
     public Member update(Member member) {
-        jdbcTemplate.update("""
-            UPDATE member
-            SET name = ?, email = ?
-            WHERE id = ?
-            """, member.getName(), member.getEmail(), member.getId());
-        return findById(member.getId());
+        try {
+            jdbcTemplate.update("""
+                    UPDATE member
+                    SET name = ?, email = ?
+                    WHERE id = ?
+                    """, member.getName(), member.getEmail(), member.getId());
+            return findById(member.getId());
+        } catch (DuplicateKeyException e) {
+            throw new ApplicationException(ErrorCode.EMAIL_EXISTS);
+        }
     }
 
     @Override
