@@ -11,7 +11,9 @@ public enum ErrorCode {
 
     FK_NOT_EXISTS(400, HttpStatus.BAD_REQUEST, "FK is not exists"),
 
-    FIELD_NULL(400, HttpStatus.BAD_REQUEST, "Field is null or blank");
+    FIELD_NULL(400, HttpStatus.BAD_REQUEST, "Field is null or blank"),
+
+    MEMBER_REFERENCE(409, HttpStatus.CONFLICT, "Member reference already exists");
 
     private final int code;
     private final HttpStatus status;

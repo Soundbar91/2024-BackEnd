@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.demo.exception.ApplicationException;
 import com.example.demo.exception.ErrorCode;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -83,9 +84,13 @@ public class MemberRepositoryJdbc implements MemberRepository {
 
     @Override
     public void deleteById(Long id) {
-        jdbcTemplate.update("""
-            DELETE FROM member
-            WHERE id = ?
-            """, id);
+        try {
+            jdbcTemplate.update("""
+                    DELETE FROM member
+                    WHERE id = ?
+                    """, id);
+        } catch (DataIntegrityViolationException e) {
+            throw new ApplicationException(ErrorCode.MEMBER_REFERENCE);
+        }
     }
 }
