@@ -25,8 +25,6 @@ public class MemberService {
 
     public MemberResponse getById(Long id) {
         Member member = memberRepository.findById(id);
-        if (member == null) throw new ApplicationException(ErrorCode.MEMBER_NOT_FOUND);
-
         return MemberResponse.from(member);
     }
 

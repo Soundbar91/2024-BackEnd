@@ -49,7 +49,7 @@ public class MemberRepositoryJdbc implements MemberRepository {
                     WHERE id = ?
                     """, memberRowMapper, id);
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            throw new ApplicationException(ErrorCode.MEMBER_NOT_FOUND);
         }
     }
 
