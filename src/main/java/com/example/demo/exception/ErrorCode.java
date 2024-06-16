@@ -3,7 +3,8 @@ package com.example.demo.exception;
 import org.springframework.http.HttpStatus;
 
 public enum ErrorCode {
-    ARTICLE_NOT_FOUND(404, HttpStatus.NOT_FOUND, "Article not found");
+    ARTICLE_NOT_FOUND(404, HttpStatus.NOT_FOUND, "Article not found"),
+    BOARD_NOT_FOUND(404, HttpStatus.NOT_FOUND, "Board not found");
 
     private final int code;
     private final HttpStatus status;
