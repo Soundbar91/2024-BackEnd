@@ -70,7 +70,7 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
                     WHERE id = ?
                     """, articleRowMapper, id);
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            throw new ApplicationException(ErrorCode.ARTICLE_NOT_FOUND);
         }
     }
 
