@@ -7,7 +7,9 @@ public enum ErrorCode {
     BOARD_NOT_FOUND(404, HttpStatus.NOT_FOUND, "Board not found"),
     MEMBER_NOT_FOUND(404, HttpStatus.NOT_FOUND, "Member not found"),
 
-    EMAIL_EXISTS(409, HttpStatus.CONFLICT, "Email already exists");
+    EMAIL_EXISTS(409, HttpStatus.CONFLICT, "Email already exists"),
+
+    FK_BOARD_NOT_EXISTS(400, HttpStatus.BAD_REQUEST, "Board FK is not exists");
 
     private final int code;
     private final HttpStatus status;

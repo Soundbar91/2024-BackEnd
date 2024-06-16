@@ -3,6 +3,10 @@ package com.example.demo.repository;
 import java.sql.PreparedStatement;
 import java.util.List;
 
+import com.example.demo.exception.ApplicationException;
+import com.example.demo.exception.ErrorCode;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -90,17 +94,21 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
 
     @Override
     public Article update(Article article) {
-        jdbcTemplate.update("""
-                UPDATE article
-                SET board_id = ?, title = ?, content = ?
-                WHERE id = ?
-                """,
-            article.getBoardId(),
-            article.getTitle(),
-            article.getContent(),
-            article.getId()
-        );
-        return findById(article.getId());
+        try {
+            jdbcTemplate.update("""
+                            UPDATE article
+                            SET board_id = ?, title = ?, content = ?
+                            WHERE id = ?
+                            """,
+                    article.getBoardId(),
+                    article.getTitle(),
+                    article.getContent(),
+                    article.getId()
+            );
+            return findById(article.getId());
+        } catch (DataIntegrityViolationException e) {
+            throw new ApplicationException(ErrorCode.FK_BOARD_NOT_EXISTS);
+        }
     }
 
     @Override
