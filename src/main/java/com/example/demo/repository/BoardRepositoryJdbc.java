@@ -10,13 +10,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.Board;
 
 import static com.example.demo.exception.ErrorCode.*;
 
-@Repository
 public class BoardRepositoryJdbc implements BoardRepository {
 
     private final JdbcTemplate jdbcTemplate;
