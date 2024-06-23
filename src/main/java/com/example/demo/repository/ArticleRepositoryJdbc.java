@@ -16,7 +16,6 @@ import com.example.demo.domain.Article;
 
 import static com.example.demo.exception.ErrorCode.*;
 
-@Repository
 public class ArticleRepositoryJdbc implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
