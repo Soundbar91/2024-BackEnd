@@ -11,13 +11,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.Member;
 
 import static com.example.demo.exception.ErrorCode.*;
 
-@Repository
 public class MemberRepositoryJdbc implements MemberRepository {
 
     private final JdbcTemplate jdbcTemplate;
