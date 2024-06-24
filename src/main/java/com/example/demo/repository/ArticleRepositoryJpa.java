@@ -3,10 +3,7 @@ package com.example.demo.repository;
 import java.util.List;
 
 import com.example.demo.exception.ApplicationException;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.PersistenceException;
+import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.Article;
@@ -16,13 +13,8 @@ import static com.example.demo.exception.ErrorCode.*;
 @Repository
 public class ArticleRepositoryJpa implements ArticleRepository {
 
-    private final EntityManager entityManager;
-    private final EntityTransaction entityTransaction;
-
-    public ArticleRepositoryJpa(EntityManagerFactory emf) {
-        this.entityManager = emf.createEntityManager();
-        this.entityTransaction = entityManager.getTransaction();
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<Article> findAll() {
@@ -59,11 +51,9 @@ public class ArticleRepositoryJpa implements ArticleRepository {
     @Override
     public Article insert(Article article) {
         try {
-            entityTransaction.begin();
             entityManager.persist(article);
             return entityManager.find(Article.class, article.getId());
         } catch (PersistenceException e) {
-            entityTransaction.rollback();
             throw new ApplicationException(FK_NOT_EXISTS);
         }
     }
@@ -71,20 +61,15 @@ public class ArticleRepositoryJpa implements ArticleRepository {
     @Override
     public Article update(Article article) {
         try {
-            entityTransaction.begin();
             entityManager.merge(article);
-            entityTransaction.commit();
             return entityManager.find(Article.class, article.getId());
         } catch (PersistenceException e) {
-            entityTransaction.rollback();
             throw new ApplicationException(FK_NOT_EXISTS);
         }
     }
 
     @Override
     public void deleteById(Long id) {
-        entityTransaction.begin();
         entityManager.remove(findById(id));
-        entityTransaction.commit();
     }
 }
