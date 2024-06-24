@@ -17,22 +17,26 @@ public class Article {
     private Long id;
 
     @NotNull
+    @Column(name = "author_id")
     private Long authorId;
 
     @NotNull
+    @Column(name = "board_id")
     private Long boardId;
 
     @NotNull
+    @Column(name = "title")
     private String title;
 
     @NotNull
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "created_date")
+    @Column(name = "created_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Setter
-    @Column(name = "modified_date")
+    @Column(name = "modified_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime modifiedAt;
 
     public Article() {

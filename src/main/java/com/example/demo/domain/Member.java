@@ -1,9 +1,6 @@
 package com.example.demo.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,12 +15,15 @@ public class Member {
     private Long id;
 
     @NotNull
+    @Column(name = "name")
     private String name;
 
     @NotNull
+    @Column(name = "email", unique = true, length = 100)
     private String email;
 
     @NotNull
+    @Column(name = "password")
     private String password;
 
     public Member() {
