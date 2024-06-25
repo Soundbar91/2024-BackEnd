@@ -47,10 +47,12 @@ public class MemberRepositoryJpa implements MemberRepository {
         }
     }
 
-    /*TODO
-    *  400 예외 처리 추가*/
     @Override
     public void deleteById(Long id) {
-        entityManager.remove(findById(id));
+        try {
+            entityManager.remove(findById(id));
+        } catch (Exception e) {
+            throw new ApplicationException(MEMBER_REFERENCE);
+        }
     }
 }

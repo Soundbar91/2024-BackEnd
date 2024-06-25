@@ -39,7 +39,11 @@ public class BoardRepositoryJpa implements BoardRepository {
 
     @Override
     public void deleteById(Long id) {
-        entityManager.remove(findById(id));
+        try {
+            entityManager.remove(findById(id));
+        } catch (Exception e) {
+            throw new ApplicationException(BOARD_REFERENCE);
+        }
     }
 
     @Override
