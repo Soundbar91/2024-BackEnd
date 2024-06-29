@@ -35,44 +35,34 @@ public class ArticleService {
 
     public ArticleResponse getById(Long id) {
         Article article = articleRepository.findById(id);
-        Member member = memberRepository.findById(article.getAuthorId());
-        Board board = boardRepository.findById(article.getBoardId());
-        return ArticleResponse.of(article, member, board);
+        return ArticleResponse.of(article, article.getMember(), article.getBoard());
     }
 
     public List<ArticleResponse> getByBoardId(Long boardId) {
         List<Article> articles = articleRepository.findAllByBoardId(boardId);
         return articles.stream()
-            .map(article -> {
-                Member member = memberRepository.findById(article.getAuthorId());
-                Board board = boardRepository.findById(article.getBoardId());
-                return ArticleResponse.of(article, member, board);
-            })
+            .map(article -> ArticleResponse.of(article, article.getMember(), article.getBoard()))
             .toList();
     }
 
     @Transactional
     public ArticleResponse create(ArticleCreateRequest request) {
-        Article article = new Article(
-            request.authorId(),
-            request.boardId(),
-            request.title(),
-            request.description()
-        );
-        Article saved = articleRepository.insert(article);
-        Member member = memberRepository.findById(saved.getAuthorId());
-        Board board = boardRepository.findById(saved.getBoardId());
+        Member member = memberRepository.findById(request.authorId());
+        Board board = boardRepository.findById(request.boardId());
+
+        Article saved = articleRepository.insert(request.toEntity(board, member));
         return ArticleResponse.of(saved, member, board);
     }
 
     @Transactional
     public ArticleResponse update(Long id, ArticleUpdateRequest request) {
         Article article = articleRepository.findById(id);
-        article.update(request.boardId(), request.title(), request.description());
+        Board board = boardRepository.findById(request.boardId());
+
+        article.update(board, request.title(), request.description());
         Article updated = articleRepository.update(article);
-        Member member = memberRepository.findById(updated.getAuthorId());
-        Board board = boardRepository.findById(article.getBoardId());
-        return ArticleResponse.of(article, member, board);
+        
+        return ArticleResponse.of(article, article.getMember(), board);
     }
 
     @Transactional
