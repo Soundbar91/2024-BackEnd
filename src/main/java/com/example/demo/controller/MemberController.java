@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,15 +34,15 @@ public class MemberController {
 
     @GetMapping("/members/{id}")
     public ResponseEntity<MemberResponse> getMember(
-        @PathVariable Long id
+            @PathVariable Long id
     ) {
         MemberResponse response = memberService.getById(id);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/members")
-    public ResponseEntity<MemberResponse> create(
-        @RequestBody MemberCreateRequest request
+    public ResponseEntity<MemberResponse> createMember(
+            @Valid @RequestBody MemberCreateRequest request
     ) {
         MemberResponse response = memberService.create(request);
         return ResponseEntity.ok(response);
@@ -49,8 +50,8 @@ public class MemberController {
 
     @PutMapping("/members/{id}")
     public ResponseEntity<MemberResponse> updateMember(
-        @PathVariable Long id,
-        @RequestBody MemberUpdateRequest request
+            @PathVariable Long id,
+            @RequestBody MemberUpdateRequest request
     ) {
         MemberResponse response = memberService.update(id, request);
         return ResponseEntity.ok(response);
@@ -58,7 +59,7 @@ public class MemberController {
 
     @DeleteMapping("/members/{id}")
     public ResponseEntity<Void> deleteMember(
-        @PathVariable Long id
+            @PathVariable Long id
     ) {
         memberService.delete(id);
         return ResponseEntity.noContent().build();

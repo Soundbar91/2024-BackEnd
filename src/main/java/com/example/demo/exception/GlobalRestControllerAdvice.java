@@ -1,8 +1,13 @@
 package com.example.demo.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestControllerAdvice
 public class GlobalRestControllerAdvice {
@@ -13,4 +18,18 @@ public class GlobalRestControllerAdvice {
         return new ResponseEntity<>(response, e.getHttpStatus());
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ExceptionResponse> dtoValidation(MethodArgumentNotValidException e) {
+        final int errorCode = 400;
+        final HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        List<String> list = new ArrayList<>();
+        e.getBindingResult().getAllErrors().forEach((error)-> {
+            String errorMessage = error.getDefaultMessage();
+            list.add(errorMessage);
+        });
+
+        ExceptionResponse response = new ExceptionResponse(errorCode, httpStatus, list);
+        return new ResponseEntity<>(response, httpStatus);
+    }
 }
