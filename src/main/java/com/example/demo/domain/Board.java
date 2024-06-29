@@ -1,33 +1,28 @@
 package com.example.demo.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Board {
 
-    @Setter
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", unique = true, length = 100)
+    @NotNull
+    @Column(name = "name", nullable = false, unique = true, length = 100)
     private String name;
 
-    public Board() {
-    }
-
-    public Board(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Board(String name) {
-        this.name = name;
-    }
+    @OneToMany(mappedBy = "board")
+    private List<Article> articles = new ArrayList<>();
 
     public void update(String name) {
         this.name = name;
