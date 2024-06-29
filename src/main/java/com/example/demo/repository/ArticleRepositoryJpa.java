@@ -61,8 +61,7 @@ public class ArticleRepositoryJpa implements ArticleRepository {
     @Override
     public Article update(Article article) {
         try {
-            entityManager.merge(article);
-            return entityManager.find(Article.class, article.getId());
+            return entityManager.merge(article);
         } catch (PersistenceException e) {
             throw new ApplicationException(FK_NOT_EXISTS);
         }

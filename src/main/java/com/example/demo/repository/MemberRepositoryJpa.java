@@ -40,8 +40,7 @@ public class MemberRepositoryJpa implements MemberRepository {
     @Override
     public Member update(Member member) {
         try {
-            entityManager.merge(member);
-            return entityManager.find(Member.class, member.getId());
+            return entityManager.merge(member);
         } catch (PersistenceException e) {
             throw new ApplicationException(FK_NOT_EXISTS);
         }

@@ -49,8 +49,7 @@ public class BoardRepositoryJpa implements BoardRepository {
     @Override
     public Board update(Board board) {
         try {
-            entityManager.merge(board);
-            return entityManager.find(Board.class, board.getId());
+            return entityManager.merge(board);
         } catch (PersistenceException e) {
             throw new ApplicationException(FK_NOT_EXISTS);
         }
