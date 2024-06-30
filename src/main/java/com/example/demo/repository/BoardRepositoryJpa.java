@@ -2,10 +2,12 @@ package com.example.demo.repository;
 
 import com.example.demo.domain.Board;
 import com.example.demo.exception.ApplicationException;
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.demo.exception.ErrorCode.*;
 
@@ -22,9 +24,8 @@ public class BoardRepositoryJpa implements BoardRepository {
 
     @Override
     public Board findById(Long id) {
-        Board board = entityManager.find(Board.class, id);
-        if (board == null) throw new ApplicationException(ARTICLE_NOT_FOUND);
-        return board;
+        return Optional.ofNullable(entityManager.find(Board.class, id))
+                .orElseThrow(() -> new ApplicationException(BOARD_NOT_FOUND));
     }
 
     @Override
@@ -32,26 +33,33 @@ public class BoardRepositoryJpa implements BoardRepository {
         try {
             entityManager.persist(board);
             return entityManager.find(Board.class, board.getId());
-        } catch (PersistenceException e) {
-            throw new ApplicationException(FK_NOT_EXISTS);
+        } catch (Exception e) {
+            if (e.getMessage().contains("Duplicate entry")) throw new ApplicationException(BOARD_EXISTS);
+            else throw new ApplicationException(UNKNOWN_EXCEPTION);
         }
     }
 
     @Override
     public void deleteById(Long id) {
         try {
-            entityManager.remove(findById(id));
+            Board board = findById(id);
+            entityManager.remove(board);
+            entityManager.flush();
         } catch (Exception e) {
-            throw new ApplicationException(BOARD_REFERENCE);
+            if (e.getMessage().contains("foreign key constraint")) throw new ApplicationException(BOARD_REFERENCE);
+            else throw new ApplicationException(UNKNOWN_EXCEPTION);
         }
     }
 
     @Override
     public Board update(Board board) {
         try {
-            return entityManager.merge(board);
-        } catch (PersistenceException e) {
-            throw new ApplicationException(FK_NOT_EXISTS);
+            Board updateBoard = entityManager.merge(board);
+            entityManager.flush();
+            return updateBoard;
+        } catch (Exception e) {
+            if (e.getMessage().contains("Duplicate entry")) throw new ApplicationException(BOARD_EXISTS);
+            else throw new ApplicationException(UNKNOWN_EXCEPTION);
         }
     }
 }
