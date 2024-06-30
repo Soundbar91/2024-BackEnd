@@ -6,6 +6,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 @Getter
 @Entity
 @Builder
@@ -22,7 +24,7 @@ public class Article {
     private Member member;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
