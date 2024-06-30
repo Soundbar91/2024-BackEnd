@@ -17,8 +17,6 @@ public record ArticleCreateRequest(
         return Article.builder()
                 .member(member)
                 .board(board)
-                .title(this.title)
-                .content(this.description)
                 .createdAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now()).build();
     }

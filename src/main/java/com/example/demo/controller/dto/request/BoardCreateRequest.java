@@ -7,7 +7,6 @@ public record BoardCreateRequest(
     @NotNull(message = "게시판 이름은 필수로 입력해야 합니다.") String name
 ) {
     public Board toEntity() {
-        return Board.builder()
-                .name(this.name).build();
+        return new Board(name);
     }
 }

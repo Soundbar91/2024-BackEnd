@@ -17,7 +17,6 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor
 public class Board {
@@ -31,6 +30,10 @@ public class Board {
 
     @OneToMany(mappedBy = "board", orphanRemoval = true, cascade = {REMOVE, PERSIST})
     private List<Article> articles = new ArrayList<>();
+
+    public Board(String name) {
+        this.name = name;
+    }
 
     public void update(String name) {
         this.name = name;
