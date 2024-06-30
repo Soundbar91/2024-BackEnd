@@ -1,3 +1,4 @@
+/*
 package com.example.demo.repository;
 
 import java.util.HashMap;
@@ -50,3 +51,4 @@ public class MemberRepositoryMemory implements MemberRepository {
         members.remove(id);
     }
 }
+*/

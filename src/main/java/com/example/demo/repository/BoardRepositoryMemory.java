@@ -1,3 +1,4 @@
+/*
 package com.example.demo.repository;
 
 import java.util.HashMap;
@@ -48,3 +49,4 @@ public class BoardRepositoryMemory implements BoardRepository {
         return boards.put(board.getId(), board);
     }
 }
+*/
