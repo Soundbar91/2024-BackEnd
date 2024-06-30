@@ -42,7 +42,7 @@ public class BoardService {
             Board saved = boardRepository.save(request.toEntity());
             return BoardResponse.from(saved);
         } catch (DataIntegrityViolationException e) {
-            throw new ApplicationException(BOARD_EXISTS);
+            throw new ApplicationException(BOARD_ALREADY_EXISTS);
         }
     }
 
@@ -55,7 +55,7 @@ public class BoardService {
             boardRepository.delete(board);
             boardRepository.flush();
         } catch (DataIntegrityViolationException e) {
-            throw new ApplicationException(BOARD_REFERENCE);
+            throw new ApplicationException(BOARD_REFERENCE_EXISTS);
         }
     }
 
@@ -66,7 +66,7 @@ public class BoardService {
             try {
                 boardRepository.flush();
             } catch (DataIntegrityViolationException e) {
-                throw new ApplicationException(BOARD_EXISTS);
+                throw new ApplicationException(BOARD_ALREADY_EXISTS);
             }
             return BoardResponse.from(board);
         }).orElseThrow(() -> new ApplicationException(BOARD_NOT_FOUND));

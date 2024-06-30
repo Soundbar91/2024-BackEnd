@@ -13,7 +13,7 @@ import java.util.List;
 public class GlobalRestControllerAdvice {
 
     @ExceptionHandler(ApplicationException.class)
-    public ResponseEntity<ExceptionResponse> exception(ApplicationException e) {
+    public ResponseEntity<ExceptionResponse> ApplicationLogicException(ApplicationException e) {
         ExceptionResponse response = new ExceptionResponse(e.getCode(), e.getHttpStatus(), e.getMessage());
         return new ResponseEntity<>(response, e.getHttpStatus());
     }

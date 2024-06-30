@@ -1,7 +1,9 @@
 package com.example.demo.exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public class ApplicationException extends RuntimeException {
     private final int code;
     private final HttpStatus httpStatus;
@@ -11,18 +13,5 @@ public class ApplicationException extends RuntimeException {
         this.code = errorCode.getCode();
         this.httpStatus = errorCode.getStatus();
         this.message = errorCode.getMessage();
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
     }
 }

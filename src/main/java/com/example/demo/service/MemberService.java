@@ -43,7 +43,7 @@ public class MemberService {
             Member member = memberRepository.save(request.toEntity());
             return MemberResponse.from(member);
         } catch (DataIntegrityViolationException e) {
-            throw new ApplicationException(EMAIL_EXISTS);
+            throw new ApplicationException(EMAIL_ALREADY_EXISTS);
         }
     }
 
@@ -56,7 +56,7 @@ public class MemberService {
             memberRepository.delete(member);
             memberRepository.flush();
         } catch (DataIntegrityViolationException e) {
-            throw new ApplicationException(MEMBER_REFERENCE);
+            throw new ApplicationException(MEMBER_REFERENCE_EXISTS);
         }
     }
 
@@ -67,7 +67,7 @@ public class MemberService {
             try {
                 memberRepository.flush();
             } catch (DataIntegrityViolationException e) {
-                throw new ApplicationException(EMAIL_EXISTS);
+                throw new ApplicationException(EMAIL_ALREADY_EXISTS);
             }
             return MemberResponse.from(member);
         }).orElseThrow(() -> new ApplicationException(MEMBER_NOT_FOUND));
