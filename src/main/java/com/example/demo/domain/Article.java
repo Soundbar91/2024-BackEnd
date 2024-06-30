@@ -19,7 +19,7 @@ public class Article {
     private Long id;
 
     @NotNull
-    @OneToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "author_id", nullable = false)
     private Member member;
 
@@ -47,6 +47,5 @@ public class Article {
         this.board = board;
         this.title = title;
         this.content = description;
-        this.modifiedAt = LocalDateTime.now();
     }
 }
