@@ -1,14 +1,15 @@
 package com.example.demo.repository;
 
-import java.util.List;
-
+import com.example.demo.domain.Article;
 import com.example.demo.exception.ApplicationException;
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.domain.Article;
+import java.util.List;
+import java.util.Optional;
 
-import static com.example.demo.exception.ErrorCode.*;
+import static com.example.demo.exception.ErrorCode.ARTICLE_NOT_FOUND;
 
 @Repository
 public class ArticleRepositoryJpa implements ArticleRepository {
@@ -43,28 +44,19 @@ public class ArticleRepositoryJpa implements ArticleRepository {
 
     @Override
     public Article findById(Long id) {
-        Article article = entityManager.find(Article.class, id);
-        if (article == null) throw new ApplicationException(ARTICLE_NOT_FOUND);
-        return article;
+        return Optional.ofNullable(entityManager.find(Article.class, id))
+                .orElseThrow(() -> new ApplicationException(ARTICLE_NOT_FOUND));
     }
 
     @Override
     public Article insert(Article article) {
-        try {
-            entityManager.persist(article);
-            return entityManager.find(Article.class, article.getId());
-        } catch (PersistenceException e) {
-            throw new ApplicationException(FK_NOT_EXISTS);
-        }
+        entityManager.persist(article);
+        return entityManager.find(Article.class, article.getId());
     }
 
     @Override
     public Article update(Article article) {
-        try {
-            return entityManager.merge(article);
-        } catch (PersistenceException e) {
-            throw new ApplicationException(FK_NOT_EXISTS);
-        }
+        return entityManager.merge(article);
     }
 
     @Override

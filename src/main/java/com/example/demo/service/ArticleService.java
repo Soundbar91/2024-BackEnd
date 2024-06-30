@@ -60,9 +60,9 @@ public class ArticleService {
         Board board = boardRepository.findById(request.boardId());
 
         article.update(board, request.title(), request.description());
-        Article updated = articleRepository.update(article);
+        Article updateArticle = articleRepository.update(article);
         
-        return ArticleResponse.of(article, article.getMember(), board);
+        return ArticleResponse.of(updateArticle, article.getMember(), board);
     }
 
     @Transactional
