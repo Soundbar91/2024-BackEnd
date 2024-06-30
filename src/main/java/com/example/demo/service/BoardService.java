@@ -1,17 +1,18 @@
 package com.example.demo.service;
 
-import java.util.List;
-
-import com.example.demo.exception.ApplicationException;
-import com.example.demo.exception.ErrorCode;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.example.demo.controller.dto.request.BoardCreateRequest;
 import com.example.demo.controller.dto.request.BoardUpdateRequest;
 import com.example.demo.controller.dto.response.BoardResponse;
 import com.example.demo.domain.Board;
+import com.example.demo.exception.ApplicationException;
 import com.example.demo.repository.BoardRepository;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static com.example.demo.exception.ErrorCode.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,31 +26,49 @@ public class BoardService {
 
     public List<BoardResponse> getBoards() {
         return boardRepository.findAll().stream()
-            .map(BoardResponse::from)
-            .toList();
+                .map(BoardResponse::from)
+                .toList();
     }
 
     public BoardResponse getBoardById(Long id) {
-        Board board = boardRepository.findById(id);
-        return BoardResponse.from(board);
+        return boardRepository.findById(id)
+                .map(BoardResponse::from)
+                .orElseThrow(() -> new ApplicationException(BOARD_NOT_FOUND));
     }
 
     @Transactional
     public BoardResponse createBoard(BoardCreateRequest request) {
-        Board saved = boardRepository.insert(request.toEntity());
-        return BoardResponse.from(saved);
+        try {
+            Board saved = boardRepository.save(request.toEntity());
+            return BoardResponse.from(saved);
+        } catch (DataIntegrityViolationException e) {
+            throw new ApplicationException(BOARD_EXISTS);
+        }
     }
 
     @Transactional
     public void deleteBoard(Long id) {
-        boardRepository.deleteById(id);
+        try {
+            Board board = boardRepository.findById(id)
+                    .orElseThrow(() -> new ApplicationException(BOARD_NOT_FOUND));
+
+            boardRepository.delete(board);
+            boardRepository.flush();
+        } catch (DataIntegrityViolationException e) {
+            throw new ApplicationException(BOARD_REFERENCE);
+        }
     }
 
     @Transactional
     public BoardResponse update(Long id, BoardUpdateRequest request) {
-        Board board = boardRepository.findById(id);
-        board.update(request.name());
-        Board updated = boardRepository.update(board);
-        return BoardResponse.from(updated);
+        return boardRepository.findById(id).map(board -> {
+            board.update(request.name());
+            try {
+                boardRepository.flush();
+            } catch (DataIntegrityViolationException e) {
+                throw new ApplicationException(BOARD_EXISTS);
+            }
+            return BoardResponse.from(board);
+        }).orElseThrow(() -> new ApplicationException(BOARD_NOT_FOUND));
     }
 }

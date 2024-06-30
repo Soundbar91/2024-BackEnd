@@ -3,16 +3,9 @@ package com.example.demo.repository;
 import java.util.List;
 
 import com.example.demo.domain.Board;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface BoardRepository {
-
-    List<Board> findAll();
-
-    Board findById(Long id);
-
-    Board insert(Board board);
-
-    void deleteById(Long id);
-
-    Board update(Board board);
+@Repository
+public interface BoardRepository extends JpaRepository<Board, Long> {
 }
