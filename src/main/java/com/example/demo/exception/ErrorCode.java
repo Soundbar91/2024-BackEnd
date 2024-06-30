@@ -1,7 +1,9 @@
 package com.example.demo.exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public enum ErrorCode {
     ARTICLE_NOT_FOUND(404, HttpStatus.NOT_FOUND, "Article not found"),
     BOARD_NOT_FOUND(404, HttpStatus.NOT_FOUND, "Board not found"),
@@ -11,10 +13,10 @@ public enum ErrorCode {
 
     FK_NOT_EXISTS(400, HttpStatus.BAD_REQUEST, "FK is not exists"),
 
-    FIELD_NULL(400, HttpStatus.BAD_REQUEST, "Field is null or blank"),
-
     MEMBER_REFERENCE(409, HttpStatus.CONFLICT, "Member reference already exists"),
-    BOARD_REFERENCE(409, HttpStatus.CONFLICT, "Board reference already exists");
+    BOARD_REFERENCE(409, HttpStatus.CONFLICT, "Board reference already exists"),
+
+    UNKNOWN_EXCEPTION(500, HttpStatus.INTERNAL_SERVER_ERROR, "Unknown Exception");
 
     private final int code;
     private final HttpStatus status;
@@ -26,15 +28,4 @@ public enum ErrorCode {
         this.message = message;
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public HttpStatus getStatus() {
-        return status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
 }

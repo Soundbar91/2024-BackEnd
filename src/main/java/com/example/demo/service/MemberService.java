@@ -1,17 +1,14 @@
 package com.example.demo.service;
 
-import java.util.List;
-
-import com.example.demo.exception.ApplicationException;
-import com.example.demo.exception.ErrorCode;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.example.demo.controller.dto.request.MemberCreateRequest;
 import com.example.demo.controller.dto.request.MemberUpdateRequest;
 import com.example.demo.controller.dto.response.MemberResponse;
 import com.example.demo.domain.Member;
 import com.example.demo.repository.MemberRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -31,8 +28,8 @@ public class MemberService {
     public List<MemberResponse> getAll() {
         List<Member> members = memberRepository.findAll();
         return members.stream()
-            .map(MemberResponse::from)
-            .toList();
+                .map(MemberResponse::from)
+                .toList();
     }
 
     @Transactional
