@@ -10,11 +10,10 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(404, HttpStatus.NOT_FOUND, "Member not found"),
 
     EMAIL_EXISTS(409, HttpStatus.CONFLICT, "Email already exists"),
+    BOARD_EXISTS(409, HttpStatus.CONFLICT, "Board already exists"),
 
-    FK_NOT_EXISTS(400, HttpStatus.BAD_REQUEST, "FK is not exists"),
-
-    MEMBER_REFERENCE(409, HttpStatus.CONFLICT, "Member reference already exists"),
-    BOARD_REFERENCE(409, HttpStatus.CONFLICT, "Board reference already exists"),
+    MEMBER_REFERENCE(400, HttpStatus.BAD_REQUEST, "Member reference already exists"),
+    BOARD_REFERENCE(400, HttpStatus.BAD_REQUEST, "Board reference already exists"),
 
     UNKNOWN_EXCEPTION(500, HttpStatus.INTERNAL_SERVER_ERROR, "Unknown Exception");
 
