@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
 @RestControllerAdvice
 public class GlobalRestControllerAdvice {
 
@@ -21,7 +23,7 @@ public class GlobalRestControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> dtoValidation(MethodArgumentNotValidException e) {
         final int errorCode = 400;
-        final HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        final HttpStatus httpStatus = BAD_REQUEST;
 
         List<String> list = new ArrayList<>();
         e.getBindingResult().getAllErrors().forEach((error)-> {
