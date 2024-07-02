@@ -16,6 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
+@Table(name = "board")
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor
 public class Board {

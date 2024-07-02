@@ -12,6 +12,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Entity
+@Table(name = "article")
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor
 public class Article {
@@ -25,7 +26,7 @@ public class Article {
     private Member member;
 
     @NotNull
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
@@ -37,11 +38,11 @@ public class Article {
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "created_date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Setter
-    @Column(name = "modified_date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @Column(name = "modified_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime modifiedAt;
 
     @Builder
@@ -52,6 +53,7 @@ public class Article {
         this.content = content;
         this.createdAt = LocalDateTime.now();
         this.modifiedAt = LocalDateTime.now();
+        member.getArticles().add(this);
     }
 
     public void update(Board board, String title, String description) {
