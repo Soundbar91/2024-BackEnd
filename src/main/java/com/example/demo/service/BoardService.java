@@ -60,7 +60,7 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardResponse update(Long id, BoardUpdateRequest request) {
+    public BoardResponse updateBoard(Long id, BoardUpdateRequest request) {
         return boardRepository.findById(id).map(board -> {
             board.update(request.name());
             try {

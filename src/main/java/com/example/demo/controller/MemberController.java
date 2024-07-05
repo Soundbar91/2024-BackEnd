@@ -28,7 +28,7 @@ public class MemberController {
 
     @GetMapping("/members")
     public ResponseEntity<List<MemberResponse>> getMembers() {
-        List<MemberResponse> response = memberService.getAll();
+        List<MemberResponse> response = memberService.getMembers();
         return ResponseEntity.ok(response);
     }
 
@@ -36,7 +36,7 @@ public class MemberController {
     public ResponseEntity<MemberResponse> getMember(
             @PathVariable Long id
     ) {
-        MemberResponse response = memberService.getById(id);
+        MemberResponse response = memberService.getByMemberId(id);
         return ResponseEntity.ok(response);
     }
 
@@ -44,7 +44,7 @@ public class MemberController {
     public ResponseEntity<MemberResponse> createMember(
             @Valid @RequestBody MemberCreateRequest request
     ) {
-        MemberResponse response = memberService.create(request);
+        MemberResponse response = memberService.createMember(request);
         return ResponseEntity.ok(response);
     }
 
@@ -53,7 +53,7 @@ public class MemberController {
             @PathVariable Long id,
             @RequestBody MemberUpdateRequest request
     ) {
-        MemberResponse response = memberService.update(id, request);
+        MemberResponse response = memberService.updateMember(id, request);
         return ResponseEntity.ok(response);
     }
 
@@ -61,7 +61,7 @@ public class MemberController {
     public ResponseEntity<Void> deleteMember(
             @PathVariable Long id
     ) {
-        memberService.delete(id);
+        memberService.deleteMember(id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -32,7 +32,7 @@ public class ArticleController {
     public ResponseEntity<ArticleResponse> getArticle(
             @PathVariable Long id
     ) {
-        ArticleResponse response = articleService.getById(id);
+        ArticleResponse response = articleService.getByArticleId(id);
         return ResponseEntity.ok(response);
     }
 
@@ -40,7 +40,7 @@ public class ArticleController {
     public ResponseEntity<ArticleResponse> createArticle(
             @Valid @RequestBody ArticleCreateRequest request
     ) {
-        ArticleResponse response = articleService.create(request);
+        ArticleResponse response = articleService.createArticle(request);
         return ResponseEntity.created(URI.create("/articles/" + response.id())).body(response);
     }
 
@@ -49,7 +49,7 @@ public class ArticleController {
             @PathVariable Long id,
             @RequestBody ArticleUpdateRequest request
     ) {
-        ArticleResponse response = articleService.update(id, request);
+        ArticleResponse response = articleService.updateArticle(id, request);
         return ResponseEntity.ok(response);
     }
 
@@ -57,7 +57,7 @@ public class ArticleController {
     public ResponseEntity<Void> deleteArticle(
             @PathVariable Long id
     ) {
-        articleService.delete(id);
+        articleService.deleteArticle(id);
         return ResponseEntity.noContent().build();
     }
 }

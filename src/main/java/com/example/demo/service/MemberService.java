@@ -24,13 +24,13 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public MemberResponse getById(Long id) {
+    public MemberResponse getByMemberId(Long id) {
         return memberRepository.findById(id)
                 .map(MemberResponse::from)
                 .orElseThrow(() -> new ApplicationException(MEMBER_NOT_FOUND));
     }
 
-    public List<MemberResponse> getAll() {
+    public List<MemberResponse> getMembers() {
         List<Member> members = memberRepository.findAll();
         return members.stream()
                 .map(MemberResponse::from)
@@ -38,7 +38,7 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberResponse create(MemberCreateRequest request) {
+    public MemberResponse createMember(MemberCreateRequest request) {
         try {
             Member member = memberRepository.save(request.toEntity());
             return MemberResponse.from(member);
@@ -48,7 +48,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void deleteMember(Long id) {
         try {
             Member member = memberRepository.findById(id)
                     .orElseThrow(() -> new ApplicationException(MEMBER_NOT_FOUND));
@@ -61,7 +61,7 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberResponse update(Long id, MemberUpdateRequest request) {
+    public MemberResponse updateMember(Long id, MemberUpdateRequest request) {
         return memberRepository.findById(id).map(member -> {
             member.update(request.name(), request.email());
             try {

@@ -50,7 +50,7 @@ public class BoardController {
             @PathVariable Long id,
             @RequestBody BoardUpdateRequest updateRequest
     ) {
-        return boardService.update(id, updateRequest);
+        return boardService.updateBoard(id, updateRequest);
     }
 
     @DeleteMapping("/boards/{id}")

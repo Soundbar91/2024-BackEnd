@@ -35,7 +35,7 @@ public class ArticleService {
         this.boardRepository = boardRepository;
     }
 
-    public ArticleResponse getById(Long id) {
+    public ArticleResponse getByArticleId(Long id) {
         return articleRepository.findById(id)
                 .map(article -> ArticleResponse.of(article, article.getMember(), article.getBoard()))
                 .orElseThrow(() -> new ApplicationException(ARTICLE_NOT_FOUND));
@@ -49,7 +49,7 @@ public class ArticleService {
     }
 
     @Transactional
-    public ArticleResponse create(ArticleCreateRequest request) {
+    public ArticleResponse createArticle(ArticleCreateRequest request) {
         Member member = memberRepository.findById(request.authorId())
                 .orElseThrow(() -> new ApplicationException(MEMBER_NOT_FOUND));
         Board board = boardRepository.findById(request.boardId())
@@ -60,7 +60,7 @@ public class ArticleService {
     }
 
     @Transactional
-    public ArticleResponse update(Long id, ArticleUpdateRequest request) {
+    public ArticleResponse updateArticle(Long id, ArticleUpdateRequest request) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ApplicationException(ARTICLE_NOT_FOUND));
         Board board = boardRepository.findById(request.boardId())
@@ -73,7 +73,7 @@ public class ArticleService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void deleteArticle(Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ApplicationException(ARTICLE_NOT_FOUND));
         articleRepository.delete(article);

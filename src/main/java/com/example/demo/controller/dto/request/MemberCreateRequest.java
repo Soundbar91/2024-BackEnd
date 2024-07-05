@@ -12,6 +12,7 @@ public record MemberCreateRequest(
         return Member.builder()
                 .name(this.name)
                 .email(this.email)
-                .password(this.password).build();
+                .password(this.password)
+                .build();
     }
 }
