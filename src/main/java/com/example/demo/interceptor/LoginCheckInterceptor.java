@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import static jakarta.servlet.http.HttpServletResponse.*;
+import static jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 public class LoginCheckInterceptor implements HandlerInterceptor {
 
@@ -16,6 +16,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("memberId")) {
+                    response.sendRedirect(request.getContextPath() + "/main");
                     return true;
                 }
             }
