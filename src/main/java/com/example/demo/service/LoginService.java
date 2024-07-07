@@ -20,10 +20,11 @@ public class LoginService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public boolean login(LoginRequest loginRequest) {
+    public Member login(LoginRequest loginRequest) {
         Member member = memberRepository.findByEmail(loginRequest.email())
                 .orElseThrow(() -> new ApplicationException(MEMBER_NOT_FOUND));
 
-        return passwordEncoder.matches(loginRequest.password(), member.getPassword());
+        if (!passwordEncoder.matches(loginRequest.password(), member.getPassword())) return null;
+        else return member;
     }
 }
