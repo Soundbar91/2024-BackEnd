@@ -36,4 +36,9 @@ public class PageController {
         return "login";
     }
 
+    @GetMapping("/index")
+    public String getIndexPage() {
+        return "index";
+    }
+
 }

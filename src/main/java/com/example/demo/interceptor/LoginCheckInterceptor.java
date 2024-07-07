@@ -27,7 +27,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         }
 
         response.setStatus(SC_UNAUTHORIZED);
-        response.sendRedirect(request.getContextPath() + "/login");
+        response.sendRedirect(request.getContextPath());
         return false;
     }
 }
