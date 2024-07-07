@@ -11,6 +11,11 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if ("POST".equals(request.getMethod()) && "/members".equals(request.getRequestURI())) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return true;
+        }
+
         Cookie[] cookies = request.getCookies();
 
         if (cookies != null) {

@@ -1,97 +1,26 @@
-<!-- 출처 : https://congsong.tistory.com/37#11.-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%ED%8E%98%EC%9D%B4%EC%A7%80html-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0 -->
 <!DOCTYPE html>
-<html lang="ko">
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml" lang="ko">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta charset="UTF-8">
     <title>회원가입</title>
-    <link rel="stylesheet" th:href="@{/css/default.css}" />
-    <link rel="stylesheet" th:href="@{/css/common.css}" />
-    <link rel="stylesheet" th:href="@{/css/content.css}" />
-    <link rel="stylesheet" th:href="@{/css/button.css}" />
-    <style>
-        #login_box .signup_btn {background:#42d870; border:0; border-bottom:solid 3px #4ed177; border-radius:50px; width:100%; height:52px; line-height:52px; font-size:16px; color:#fff; text-align:center; margin:20px 0 15px;}
-    </style>
 </head>
-
-<!--/* 회원가입 popup */-->
-<div id="signupPopup" class="popLayer">
-    <h3>회원가입</h3>
-    <div class="pop_container">
-        <form id="signupForm" onsubmit="return false;" autocomplete="off">
-            <table class="tb tb_row tl">
-                <colgroup>
-                    <col style="width:30%;" /><col style="width:70%;" />
-                </colgroup>
-                <tbody>
-                <tr>
-                    <th scope="row">이메일</th>
-                    <td><label>
-                        <input type="text" name="loginEmail" placeholder="이메일" maxlength="20" style="width: 80%;" />
-                    </label></td>
-                </tr>
-                <tr>
-                    <th scope="row">비밀번호</th>
-                    <td><label>
-                        <input type="password" name="password" placeholder="비밀번호" maxlength="30" />
-                    </label></td>
-                </tr>
-                <tr>
-                    <th scope="row">이름</th>
-                    <td><label>
-                        <input type="text" name="name" placeholder="이름" maxlength="10" />
-                    </label></td>
-                </tr>
-                </tbody>
-            </table>
-        </form>
-        <p class="btn_set">
-            <button type="button" class="btns btn_st2" onclick="saveMember();">가입하기</button>
-        </p>
-    </div>
+<body>
+<div layout:fragment="content" class="container my-3">
+    <form th:action="@{/members}" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">이름</label>
+            <input type="text" name="name" id="name" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">이메일</label>
+            <input type="text" name="email" id="email" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">비밀번호</label>
+            <input type="password" name="password" id="password" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">가입하기</button>
+    </form>
 </div>
-
-<script th:src="@{/js/function.js}"></script>
-<script th:src="@{/js/jquery-3.6.0.min.js}"></script>
-<script th:src="@{/js/common.js}"></script>
-<script src="https://kit.fontawesome.com/79613ae794.js" crossorigin="anonymous"></script>
-<script>
-
-    // 회원가입
-    function saveMember() {
-
-        // 1. 파라미터 세팅
-        const form = document.getElementById('signupForm');
-        const params = {}
-        new FormData(form).forEach((value, key) => params[key] = value.trim());
-
-        // 2. Save API 호출
-        callApi('/members', 'post', params);
-        alert('가입을 축하드립니다!');
-    }
-
-    function callApi(uri, method, params) {
-
-        let json = {}
-
-        $.ajax({
-            url : uri,
-            type : method,
-            contentType : 'application/json; charset=utf-8',
-            dataType : 'json',
-            data : (params) ? JSON.stringify(params) : {},
-            async : false,
-            success : function (response) {
-                json = response;
-            },
-            error : function (request, status, error) {
-                console.log(error)
-            }
-        })
-
-        return json;
-    }
-
-</script>
 </body>
 </html>

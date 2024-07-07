@@ -35,7 +35,7 @@ public class MemberController {
 
     @PostMapping("/members")
     public ResponseEntity<MemberResponse> createMember(
-            @Valid @RequestBody MemberCreateRequest request
+            @Valid @ModelAttribute MemberCreateRequest request
     ) {
         MemberResponse response = memberService.createMember(request);
         return ResponseEntity.ok(response);
