@@ -7,6 +7,7 @@ import com.example.demo.domain.Member;
 import com.example.demo.exception.ApplicationException;
 import com.example.demo.repository.MemberRepository;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,9 +20,11 @@ import static com.example.demo.exception.ErrorCode.*;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
         this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public MemberResponse getByMemberId(Long id) {
@@ -40,7 +43,8 @@ public class MemberService {
     @Transactional
     public MemberResponse createMember(MemberCreateRequest request) {
         try {
-            Member member = memberRepository.save(request.toEntity());
+            String passWord = passwordEncoder.encode(request.password());
+            Member member = memberRepository.save(request.toEntity(passWord));
             return MemberResponse.from(member);
         } catch (DataIntegrityViolationException e) {
             throw new ApplicationException(EMAIL_ALREADY_EXISTS);

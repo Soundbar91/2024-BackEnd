@@ -23,4 +23,9 @@ public class PageController {
     public String getArticleDetailPage() {
         return "article";
     }
+
+    @GetMapping("/register")
+    public String getRegisterPage() {
+        return "register";
+    }
 }

@@ -28,6 +28,7 @@ http://localhost:8080
 | DELETE | /members/{id}  | 특정 회원을 삭제합니다.         | `id` (path): 회원 ID  | -                              | -                                                                 |
 | POST   | /members       | 새 회원을 생성합니다.          | -                   | Content-Type: application/json | `{ "name": "", "email": "", "password": "" }`                     |
 | PUT    | /members/{id}  | 기존 회원을 업데이트합니다.       | `id` (path): 회원 ID  | Content-Type: application/json | `{ "name": "", "email": "" }`                                     |
+| GET    | /register      | 회원 가입 페이지를 가져옵니다.     | -                   | -                              |
 
 ### 사용 예시
 

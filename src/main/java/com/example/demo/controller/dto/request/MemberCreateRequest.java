@@ -8,11 +8,11 @@ public record MemberCreateRequest(
     @NotNull(message = "이메일은 필수로 입력해야 합니다.") String email,
     @NotNull(message = "비밀번호는 필수로 입력해야 합니다.") String password
 ) {
-    public Member toEntity() {
+    public Member toEntity(String password) {
         return Member.builder()
                 .name(this.name)
                 .email(this.email)
-                .password(this.password)
+                .password(password)
                 .build();
     }
 }
