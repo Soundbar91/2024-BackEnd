@@ -28,4 +28,10 @@ public class PageController {
     public String getRegisterPage() {
         return "register";
     }
+
+    @GetMapping("/login")
+    public String getLoginPage() {
+        return "login";
+    }
+
 }
