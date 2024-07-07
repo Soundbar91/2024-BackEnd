@@ -18,8 +18,6 @@ public class LoginService {
     }
 
     public Member login(LoginRequest loginRequest) {
-        System.out.println(loginRequest.toString());
-
         Member member = memberRepository.findByEmail(loginRequest.email());
         if (member == null) return null;
 

@@ -17,9 +17,7 @@ public enum ErrorCode {
     MEMBER_REFERENCE_EXISTS(400, BAD_REQUEST, "Member reference already exists"),
     BOARD_REFERENCE_EXISTS(400, BAD_REQUEST, "Board reference already exists"),
 
-    UNKNOWN_EXCEPTION(500, INTERNAL_SERVER_ERROR, "Unknown Exception"),
-
-    MISMATCH_PASSWORD(400, BAD_REQUEST, "Invalid Password");
+    UNKNOWN_EXCEPTION(500, INTERNAL_SERVER_ERROR, "Unknown Exception");
 
     private final int code;
     private final HttpStatus status;
