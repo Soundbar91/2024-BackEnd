@@ -2,8 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.controller.dto.request.LoginRequest;
 import com.example.demo.controller.dto.response.MemberResponse;
-import com.example.demo.domain.Member;
-import com.example.demo.exception.ApplicationException;
 import com.example.demo.service.LoginService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
